@@ -3,6 +3,15 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const mongoose = require("mongoose");
+
+// eslint-disable-next-line prettier/prettier
+const mongoDB = "mongodb+srv://Othman-19:0780458241-Na@cluster0.6xcjv.mongodb.net/<dbname>?retryWrites=true&w=majority";
+mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connection.on(
+  "error",
+  console.error.bind(console, "MongoDB connection error:"),
+);
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");

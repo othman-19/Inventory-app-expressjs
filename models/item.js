@@ -30,3 +30,5 @@ const ItemSchema = new Schema({
 });
 // eslint-disable-next-line no-underscore-dangle
 ItemSchema.virtual("url").get(() => `/inv/item/${this._id}`);
+
+module.exports = mongoose.model("Item", ItemSchema);

@@ -18,3 +18,5 @@ const CategorySchema = new Schema({
 
 // eslint-disable-next-line no-underscore-dangle
 CategorySchema.virtual("url").get(() => `/inv/category/${this._id}`);
+
+module.exports = mongoose.model("Category", CategorySchema);

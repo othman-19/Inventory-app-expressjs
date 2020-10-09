@@ -1,17 +1,20 @@
-{
+{   
     "env": {
+        "commonjs": true,
         "browser": true,
         "es2021": true,
         "node": true
     },
-    "parser": "babel-eslint",
     "parserOptions": {
-        "ecmaVersion": 12,
-        "sourceType": "module"
+        "ecmaVersion": 12
     },
     "extends": [
         "airbnb-base"
     ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
     "rules": {
         "no-shadow": "off",
         "no-param-reassign": "off",
@@ -20,12 +23,12 @@
         "semi": ["error", "always"],
         "quotes": ["error", "double"],
         "comma-dangle": ["error", {
-            "arrays": "allways",
-            "objects": "allways",
+            "arrays": "always",
+            "objects": "always",
             "imports": "never",
             "exports": "never",
             "functions": "never"
         }]
-    },
-    "ignorePatterns": []
+    }
+    //"ignorePatterns": []
 }

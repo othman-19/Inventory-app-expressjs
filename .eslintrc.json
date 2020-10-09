@@ -27,12 +27,8 @@
         "arrow-parens": "off",
         "semi": ["error", "always"],
         "quotes": ["error", "double"],
-        "comma-dangle": ["error", {
-            "arrays": "always",
-            "objects": "always",
-            "imports": "never",
-            "exports": "never",
-            "functions": "never"
+        "no-unused-vars": ["error", {
+            "args": "none"
         }]
     }
     //"ignorePatterns": []

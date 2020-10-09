@@ -9,13 +9,18 @@
         "ecmaVersion": 12
     },
     "extends": [
+        "prettier",
         "airbnb-base"
+    ],
+    "plugins": [
+        "prettier"
     ],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
     },
     "rules": {
+        "prettier/prettier": "error",
         "no-shadow": "off",
         "no-param-reassign": "off",
         "eol-last": "off",

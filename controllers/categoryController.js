@@ -137,3 +137,57 @@ exports.category_delete_get = (req, res, next) => {
     },
   );
 };
+
+// Handle Category delete on POST.
+exports.category_delete_post = (req, res, next) => {
+  async.parallel(
+    {
+      category(callback) {
+        Category.findById(req.body.categoryid).exec(callback);
+      },
+      category_items(callback) {
+        Item.find({ category: req.body.categoryid }).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      // Success
+      if (results.category_items.length > 0) {
+        // category has items. Render in same way as for GET route.
+        res.render("category_delete", {
+          title: "Delete Category",
+          category: results.category,
+          category_items: results.category_items,
+        });
+      } else {
+        // Category has no items. Delete object and redirect to the list of authors.
+        Category.findByIdAndRemove(req.body.categoryid, (error) => {
+          if (error) {
+            return next(error);
+          }
+          // Success - go to author list
+          res.redirect("/inv/categories");
+          return next();
+        });
+      }
+      return next();
+    },
+  );
+};
+
+// Display Category update form on GET.
+exports.category_update_get = (req, res, next) => {
+  Category.findById(req.params.id, (err, category) => {
+    if (err) {
+      return next(err);
+    }
+    if (category === null) {
+      res.redirect("/inv/categories");
+    } else {
+      res.render("category_form", { title: "Update Category", category });
+    }
+    return next();
+  }).exec();
+};

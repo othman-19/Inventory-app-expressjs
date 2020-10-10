@@ -58,15 +58,13 @@ exports.category_create_get = (req, res, next) => {
   res.render("category_form", { title: "Create category" });
 };
 
-// Handle Genre create on POST.
+// Handle Category create on POST.
 exports.category_create_post = [
   // Validate that the name field is not empty.
   body("name", "Category name required")
     .trim()
     .isLength({ min: 1 })
-    .not()
-    .isEmpty()
-    .trim()
+    .notEmpty()
     .escape(),
 
   // Process request after validation and sanitization.
@@ -74,7 +72,7 @@ exports.category_create_post = [
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
-    // Create a genre object with escaped and trimmed data.
+    // Create a category object with escaped and trimmed data.
     const category = new Category({ name: req.body.name });
 
     if (!errors.isEmpty()) {
@@ -109,3 +107,33 @@ exports.category_create_post = [
     }
   },
 ];
+
+// Display category delete form on GET.
+exports.category_delete_get = (req, res, next) => {
+  async.parallel(
+    {
+      category(callback) {
+        Category.findById(req.params.id).exec(callback);
+      },
+      category_items(callback) {
+        Item.find({ category: req.params.id }).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.category === null) {
+        // No results.
+        res.redirect("/inv/categories");
+      }
+      // Successful, so render.
+      res.render("category_delete", {
+        title: "Delete Category",
+        category: results.category,
+        category_items: results.category_items,
+      });
+      return next(err);
+    },
+  );
+};

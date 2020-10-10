@@ -52,3 +52,8 @@ exports.category_detail = (req, res, next) => {
     },
   );
 };
+
+// Display Genre create form on GET.
+exports.category_create_get = (req, res, next) => {
+  res.render("category_form", { title: "Create category" });
+};

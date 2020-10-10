@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
@@ -5,8 +6,8 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 
-// eslint-disable-next-line prettier/prettier
-const mongoDB = "mongodb+srv://Othman-19:0780458241-Na@cluster0.6xcjv.mongodb.net/<dbname>?retryWrites=true&w=majority";
+// const mongoDB = "mongodb+srv://Othman-19:0780458241-Na@cluster0.6xcjv.mongodb.net/<dbname>?retryWrites=true&w=majority";
+const mongoDB = "mongodb://Othman-19:0780458241-Na@cluster0-shard-00-00.6xcjv.mongodb.net:27017,cluster0-shard-00-01.6xcjv.mongodb.net:27017,cluster0-shard-00-02.6xcjv.mongodb.net:27017/<dbname>?ssl=true&replicaSet=atlas-12kjph-shard-0&authSource=admin&retryWrites=true&w=majority";
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.on(
   "error",

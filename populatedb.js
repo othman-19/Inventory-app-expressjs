@@ -19,7 +19,7 @@ if (!userArgs[0].startsWith('mongodb')) {
 */
 
 const mongoDB = userArgs[0];
-mongoose.connect(mongoDB, { useNewUrlParser: true });
+mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));

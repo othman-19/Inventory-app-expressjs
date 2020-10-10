@@ -66,6 +66,11 @@ exports.category_create_post = [
     .isLength({ min: 1 })
     .notEmpty()
     .escape(),
+  body("description", "Category description required")
+    .trim()
+    .isLength({ min: 1 })
+    .notEmpty()
+    .escape(),
 
   // Process request after validation and sanitization.
   (req, res, next) => {
@@ -73,7 +78,10 @@ exports.category_create_post = [
     const errors = validationResult(req);
 
     // Create a category object with escaped and trimmed data.
-    const category = new Category({ name: req.body.name });
+    const category = new Category({
+      name: req.body.name,
+      description: req.body.description,
+    });
 
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
@@ -191,3 +199,67 @@ exports.category_update_get = (req, res, next) => {
     return next();
   }).exec();
 };
+
+// Handle Category update on POST.
+exports.category_update_post = [
+  // Sanitize and alidate that the name and description fields are not empty.
+  body("name", "Category name required")
+    .trim()
+    .isLength({ min: 1 })
+    .notEmpty()
+    .escape(),
+  body("description", "Category description required")
+    .trim()
+    .isLength({ min: 1 })
+    .notEmpty()
+    .escape(),
+
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    // Create a category object with escaped and trimmed data.
+    const category = new Category({
+      name: req.body.name,
+      description: req.body.description,
+      _id: req.params.id,
+    });
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render the form again with sanitized values/error messages.
+      res.render("category_form", {
+        title: "Update Category",
+        category,
+        errors: errors.array(),
+      });
+    } else {
+      // Data from form is valid.
+      // Check if Category with same name already exists.
+      Category.findOne({ name: req.body.name }).exec((err, foundCategory) => {
+        if (err) {
+          return next(err);
+        }
+        if (foundCategory) {
+          // Category exists, redirect to its detail page.
+          res.redirect(foundCategory.url);
+        } else {
+          Category.findByIdAndUpdate(
+            req.params.id,
+            category,
+            {},
+            (error, updatedCategory) => {
+              if (error) {
+                return next(error);
+              }
+              // Successful - redirect to category detail page.
+              res.redirect(updatedCategory.url);
+              return next();
+            },
+          );
+        }
+        return next();
+      });
+    }
+  },
+];

@@ -1,5 +1,5 @@
 const async = require("async");
-const validator = require("express-validator");
+const { body, validationResult } = require("express-validator");
 const Category = require("../models/category");
 const Item = require("../models/item");
 
@@ -53,7 +53,7 @@ exports.category_detail = (req, res, next) => {
   );
 };
 
-// Display Genre create form on GET.
+// Display Category create form on GET.
 exports.category_create_get = (req, res, next) => {
   res.render("category_form", { title: "Create category" });
 };
@@ -61,15 +61,18 @@ exports.category_create_get = (req, res, next) => {
 // Handle Genre create on POST.
 exports.category_create_post = [
   // Validate that the name field is not empty.
-  validator.body("name", "Category name required").trim().isLength({ min: 1 }),
-
-  // Sanitize (escape) the name field.
-  validator.sanitizeBody("name").escape(),
+  body("name", "Category name required")
+    .trim()
+    .isLength({ min: 1 })
+    .not()
+    .isEmpty()
+    .trim()
+    .escape(),
 
   // Process request after validation and sanitization.
   (req, res, next) => {
     // Extract the validation errors from a request.
-    const errors = validator.validationResult(req);
+    const errors = validationResult(req);
 
     // Create a genre object with escaped and trimmed data.
     const category = new Category({ name: req.body.name });

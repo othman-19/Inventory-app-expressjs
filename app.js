@@ -16,7 +16,7 @@ mongoose.connection.on(
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
-const inventoryRouter = require("./routes/invent");
+const inventoryRouter = require("./routes/inventory");
 
 const app = express();
 

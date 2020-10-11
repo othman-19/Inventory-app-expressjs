@@ -3,6 +3,29 @@ const { body, validationResult } = require("express-validator");
 const Category = require("../models/category");
 const Item = require("../models/item");
 
+exports.index = (req, res) => {
+  async.parallel(
+    {
+      item_list(callback) {
+        Item.find({}, "name").populate("category");
+      },
+      category_count(callback) {
+        Category.countDocuments({}, callback);
+      },
+      item_count(callback) {
+        Item.countDocuments({}, callback);
+      },
+    },
+    (err, results) => {
+      res.render("index", {
+        title: "Inventory Home",
+        error: err,
+        data: results,
+      });
+    },
+  );
+};
+
 // Display list of all Categories.
 exports.category_list = (req, res, next) => {
   Category.find({}, "name")

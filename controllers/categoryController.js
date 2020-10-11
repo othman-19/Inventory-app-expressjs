@@ -7,7 +7,7 @@ exports.index = (req, res) => {
   async.parallel(
     {
       item_list(callback) {
-        Item.find({}, "name").populate("category");
+        Item.find({}, "name").populate("category").exec(callback);
       },
       category_count(callback) {
         Category.countDocuments({}, callback);

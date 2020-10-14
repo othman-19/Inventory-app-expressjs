@@ -193,12 +193,12 @@ exports.category_delete_post = (req, res, next) => {
           category_items: results.category_items,
         });
       } else {
-        // Category has no items. Delete object and redirect to the list of authors.
+        // Category has no items. Delete object and redirect to the list of categories.
         Category.findByIdAndRemove(req.body.categoryid, (error) => {
           if (error) {
             return next(error);
           }
-          // Success - go to author list
+          // Success - go to categories list
           res.redirect("/inv/categories");
           return next();
         });

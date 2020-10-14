@@ -2,4 +2,18 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Welcome to #[em your Inventory Application].
+
+  h2 The Inventory content
+
+  if error
+    p Error getting dynamic content.
+  else
+    p The library has the following record counts:
+
+    ul
+      li 
+        a(href='/inv/categories') #[strong Categories:] !{data.category_count}
+      li 
+        a(href='/inv/items') #[strong Items:] !{data.item_count}
+      

@@ -35,11 +35,10 @@ exports.category_list = (req, res, next) => {
         return next(err);
       }
       // Successful, so render
-      res.render("category_list", {
+      return res.render("category_list", {
         title: "Category List",
         categoryList,
       });
-      return true;
     });
 };
 
@@ -66,12 +65,11 @@ exports.category_detail = (req, res, next) => {
         return next(error);
       }
       // Successful, so render
-      res.render("category_detail", {
+      return res.render("category_detail", {
         title: "Category Detail",
         category: results.category,
         category_items: results.category_items,
       });
-      return next();
     },
   );
 };
@@ -116,24 +114,22 @@ exports.category_create_post = [
     } else {
       // Data from form is valid.
       // Check if Category with same name already exists.
+      // eslint-disable-next-line consistent-return
       Category.findOne({ name: req.body.name }).exec((err, foundCategory) => {
         if (err) {
           return next(err);
         }
         if (foundCategory) {
           // Category exists, redirect to its detail page.
-          res.redirect(foundCategory.url);
-        } else {
-          category.save((error) => {
-            if (error) {
-              return next(error);
-            }
-            // Category saved. Redirect to category detail page.
-            res.redirect(category.url);
-            return next();
-          });
+          return res.redirect(foundCategory.url);
         }
-        return next();
+        category.save((error) => {
+          if (error) {
+            return next(error);
+          }
+          // Category saved. Redirect to category detail page.
+          return res.redirect(category.url);
+        });
       });
     }
   },
@@ -159,12 +155,11 @@ exports.category_delete_get = (req, res, next) => {
         res.redirect("/inv/categories");
       }
       // Successful, so render.
-      res.render("category_delete", {
+      return res.render("category_delete", {
         title: "Delete Category",
         category: results.category,
         category_items: results.category_items,
       });
-      return next(err);
     },
   );
 };
@@ -180,6 +175,7 @@ exports.category_delete_post = (req, res, next) => {
         Item.find({ category: req.body.categoryid }).exec(callback);
       },
     },
+    // eslint-disable-next-line consistent-return
     (err, results) => {
       if (err) {
         return next(err);
@@ -199,11 +195,9 @@ exports.category_delete_post = (req, res, next) => {
             return next(error);
           }
           // Success - go to categories list
-          res.redirect("/inv/categories");
-          return next();
+          return res.redirect("/inv/categories");
         });
       }
-      return next();
     },
   );
 };
@@ -215,11 +209,12 @@ exports.category_update_get = (req, res, next) => {
       return next(err);
     }
     if (category === null) {
-      res.redirect("/inv/categories");
-    } else {
-      res.render("category_form", { title: "Update Category", category });
+      return res.redirect("/inv/categories");
     }
-    return next();
+    return res.render("category_form", {
+      title: "Update Category",
+      category,
+    });
   }).exec();
 };
 
@@ -259,29 +254,27 @@ exports.category_update_post = [
     } else {
       // Data from form is valid.
       // Check if Category with same name already exists.
+      // eslint-disable-next-line consistent-return
       Category.findOne({ name: req.body.name }).exec((err, foundCategory) => {
         if (err) {
           return next(err);
         }
         if (foundCategory) {
           // Category exists, redirect to its detail page.
-          res.redirect(foundCategory.url);
-        } else {
-          Category.findByIdAndUpdate(
-            req.params.id,
-            category,
-            {},
-            (error, updatedCategory) => {
-              if (error) {
-                return next(error);
-              }
-              // Successful - redirect to category detail page.
-              res.redirect(updatedCategory.url);
-              return next();
-            },
-          );
+          return res.redirect(foundCategory.url);
         }
-        return next();
+        Category.findByIdAndUpdate(
+          req.params.id,
+          category,
+          {},
+          (error, updatedCategory) => {
+            if (error) {
+              return next(error);
+            }
+            // Successful - redirect to category detail page.
+            return res.redirect(updatedCategory.url);
+          },
+        );
       });
     }
   },

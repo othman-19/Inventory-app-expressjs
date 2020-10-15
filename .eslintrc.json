@@ -1,0 +1,35 @@
+{   
+    "env": {
+        "commonjs": true,
+        "browser": true,
+        "es2021": true,
+        "node": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 12
+    },
+    "extends": [
+        "prettier",
+        "airbnb-base"
+    ],
+    "plugins": [
+        "prettier"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "rules": {
+        "prettier/prettier": "error",
+        "no-shadow": "off",
+        "no-param-reassign": "off",
+        "eol-last": "off",
+        "arrow-parens": "off",
+        "semi": ["error", "always"],
+        "quotes": ["error", "double"],
+        "no-unused-vars": ["error", {
+            "args": "none"
+        }]
+    }
+    //"ignorePatterns": []
+}

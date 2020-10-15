@@ -1,0 +1,36 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='name') Name:
+      input#name.form-control(type='text', placeholder='Name of item' name='name' required='true' value=(item===undefined ? '' : item.name) )
+    div.form-group
+      label(for='description') Description:
+      textarea#description.form-control(type='textarea', placeholder='Description' name='description' rows='3' required='true') #{item===undefined ? '' : item.description}
+    div.form-group
+      label(for='price') Price:
+      input#price.form-control(type='text', placeholder='price' name='price' value=(item===undefined ? '' : item.price) required='true') 
+    div.form-group
+      label(for='numberInStock') Number In Stock:
+      input#numberInStock.form-control(type='text', placeholder='Number In Stock' name='numberInStock' value=(item===undefined ? '' : item.numberInStock) required='true') 
+    div.form-group
+      label(for='category') Category:
+        select#category.form-control(type='select', placeholder='select category' name='category' required='true' )
+          - categories.sort(function(a, b) {let A = a.name.toUpperCase(); let B = b.name.toUpperCase(); return (A < B) ? -1 : (A > B) ? 1 : 0;});
+          for category in categories
+            if item
+              option(value=category._id selected=(
+                (category._id.toString()===item.category._id.toString() || category._id.toString()===item.category.toString())
+                ? 'selected' 
+                : false) ) #{category.name}
+            else
+              option(value=category._id) #{category.name}
+    button.btn.btn-primary(type='submit') Submit
+
+  if errors 
+    ul
+      for error in errors
+        li!= error.msg

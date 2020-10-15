@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  h1= title
+  
+  ul
+    - 
+      itemList.sort(
+        (a, b) => {
+          let A = a.name.toUpperCase();
+          let B = b.name.toUpperCase();
+          return (A < B) ? -1 : (A > B) ? 1 : 0;
+        }
+      );
+    each item in itemList
+      li 
+        a(href=item.url) #{item.name} 
+        |  (#{item.category.name})
+
+    else
+      li There are no books.

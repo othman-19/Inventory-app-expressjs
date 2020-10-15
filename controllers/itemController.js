@@ -174,7 +174,7 @@ exports.item_update_get = (req, res, next) => {
       }
       // Success.
       // Mark our selected category as checked.
-      for (let i = 0; i < results.caterories.length; i += 1) {
+      for (let i = 0; i < results.categories.length; i += 1) {
         if (
           // eslint-disable-next-line operator-linebreak
           results.categories[i]._id.toString() ===

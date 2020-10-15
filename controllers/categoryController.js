@@ -254,8 +254,11 @@ exports.category_update_post = [
     } else {
       // Data from form is valid.
       // Check if Category with same name already exists.
-      // eslint-disable-next-line consistent-return
-      Category.findOne({ name: req.body.name }).exec((err, foundCategory) => {
+      Category.findOne({
+        name: req.body.name,
+        description: req.body.description,
+        // eslint-disable-next-line consistent-return
+      }).exec((err, foundCategory) => {
         if (err) {
           return next(err);
         }

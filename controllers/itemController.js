@@ -1,9 +1,45 @@
 /* eslint-disable no-underscore-dangle */
 const async = require("async");
 const { body, validationResult } = require("express-validator");
+const path = require("path");
+const multer = require("multer");
 const Item = require("../models/item");
 const Category = require("../models/category");
-const multer = require('multer');
+
+// Image Storage
+const storage = multer.diskStorage({
+  destination: "./public/uploads/",
+  filename(req, file, cb) {
+    cb(
+      null,
+      `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`,
+    );
+  },
+});
+
+// Check File Type
+const checkFileType = (file, cb) => {
+  // Allowed ext
+  const filetypes = /jpeg|jpg|png|gif/;
+  // Check ext
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  // Check mime
+  const mimetype = filetypes.test(file.mimetype);
+
+  if (mimetype && extname) {
+    return cb(null, true);
+  }
+  return cb("Error: Images Only!");
+};
+
+// Init Upload
+exports.upload = multer({
+  storage,
+  limits: { fileSize: 1000000 },
+  fileFilter(req, file, cb) {
+    checkFileType(file, cb);
+  },
+}).array("images", 6);
 
 // Display list of all items.
 exports.item_list = (req, res, next) => {

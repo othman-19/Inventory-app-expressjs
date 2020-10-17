@@ -3,6 +3,7 @@ const async = require("async");
 const { body, validationResult } = require("express-validator");
 const Item = require("../models/item");
 const Category = require("../models/category");
+const multer = require('multer');
 
 // Display list of all items.
 exports.item_list = (req, res, next) => {

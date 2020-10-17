@@ -30,7 +30,7 @@ block content
               option(value=category._id) #{category.name}
     div.form-group
       label(for='images') Images:
-      input#images.form-control(type='file', placeholder='add item images' name='images')
+      input#images.form-control(type='file', placeholder='add item images' name='images' multiple)
     button.btn.btn-primary(type='submit') Submit
 
   if errors 

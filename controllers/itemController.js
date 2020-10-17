@@ -121,7 +121,7 @@ exports.item_create_post = [
     // Extract the validation errors from a request.
     const errors = validationResult(req);
     // Create a Item object with escaped and trimmed data.
-    const images = req.files ? req.files.map((file) => file.path) : [];
+    const images = req.files ? req.files.map((file) => file.filename) : [];
     const item = new Item({
       name: req.body.name,
       description: req.body.description,
@@ -264,7 +264,7 @@ exports.item_update_post = [
     const errors = validationResult(req);
 
     // Create a Item object with escaped and trimmed data.
-    const images = req.files ? req.files.map((file) => file.path) : [];
+    const images = req.files ? req.files.map((file) => file.filename) : [];
     const item = new Item({
       name: req.body.name,
       description: req.body.description,

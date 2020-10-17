@@ -27,6 +27,7 @@ const ItemSchema = new Schema({
     type: Number,
     required: true,
   },
+  images: [String],
 });
 // eslint-disable-next-line no-underscore-dangle
 ItemSchema.virtual("url").get(function () {

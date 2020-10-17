@@ -121,12 +121,14 @@ exports.item_create_post = [
     // Extract the validation errors from a request.
     const errors = validationResult(req);
     // Create a Item object with escaped and trimmed data.
+    const images = req.files ? req.files.map((file) => file.path) : [];
     const item = new Item({
       name: req.body.name,
       description: req.body.description,
       category: req.body.category,
       price: req.body.price,
       numberInStock: req.body.numberInStock,
+      images,
     });
 
     if (!errors.isEmpty()) {
@@ -262,12 +264,14 @@ exports.item_update_post = [
     const errors = validationResult(req);
 
     // Create a Item object with escaped and trimmed data.
+    const images = req.files ? req.files.map((file) => file.path) : [];
     const item = new Item({
       name: req.body.name,
       description: req.body.description,
       category: req.body.category,
       price: req.body.price,
       numberInStock: req.body.numberInStock,
+      images,
       _id: req.params.id,
     });
 

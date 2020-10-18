@@ -8,7 +8,11 @@ block content
   p #[strong Description:] #{item.description}
   p #[strong Price:] #{item.price}
   p #[strong Number in stock:] #{item.numberInStock}
-  
+  if item.images.length
+    hr
+    p #[strong Images:]
+    each image in item.images
+      img(src="/uploads/"+image class="img-fluid" style='margin:2%; max-width:40%; height: auto;' alt=item.name+" image")
   div(style='margin-left:20px;margin-top:20px')
     hr
     p
